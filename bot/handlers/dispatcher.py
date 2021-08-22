@@ -7,10 +7,12 @@ from telegram.ext import (
 )
 import os
 from bot.handlers import commands
+from bot.handlers.buttons import inline_buttons_handler
 
 
 def setup_dispatcher(dp):
     dp.add_handler(CommandHandler("start", commands.start))
+    dp.add_handler(CallbackQueryHandler(inline_buttons_handler))
     return dp
 
 

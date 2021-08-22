@@ -3,3 +3,5 @@
 /.env.dev
 /.idea/
 __pycache__/
+/.env.prod
+/static/

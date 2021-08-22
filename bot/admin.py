@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django import forms
-from bot.models import User, UserActionLog, StaticText
+from bot.models import User, UserActionLog, StaticText, RentObject
 from emoji_picker.widgets import EmojiPickerTextInputAdmin, EmojiPickerTextareaAdmin
 
 
@@ -26,7 +26,6 @@ class StaticTextForm(forms.ModelForm):
     class Meta:
         model = StaticText
         list_display = ['name', 'description', 'content']
-        search_fields = ['description', 'content']
         fields = ['name', 'description', 'content']
         fieldsets = (
                     (None, {
@@ -36,28 +35,33 @@ class StaticTextForm(forms.ModelForm):
                 )
 
 
-
 @admin.register(StaticText)
 class StaticTextAdmin(admin.ModelAdmin):
     form = StaticTextForm
+    search_fields = ['description', 'content']
 
     def get_readonly_fields(self, request, obj=None):
         if obj:  # editing an existing object
             return self.readonly_fields + ('description', 'name')
         return self.readonly_fields
 
-#@admin.register(StaticText)
-#class StaticTextAdmin(admin.ModelAdmin):
-#    list_display = ['name', 'description', 'content']
-#    search_fields = ['description', 'content']
-#    fieldsets = (
-#        (None, {
-#            "fields": ('name', 'description', 'content')
-#        }
-#        ),
-#    )
-#
-#    def get_readonly_fields(self, request, obj=None):
-#        if obj:  # editing an existing object
-#            return self.readonly_fields + ('name', 'description')
-#        return self.readonly_fields
+
+@admin.register(RentObject)
+class RentObjectAdmin(admin.ModelAdmin):
+    #form = RentObjectForm
+    search_fields = ['name', 'description', 'rent_type']
+    fieldsets = (
+        (None, {
+            "fields": ('rent_type', 'advanced_rent_type', 'name', 'amount')
+        }
+         ),
+        ('Вместимтость', {
+            'fields': (('capacity', 'child_capacity'),)
+        }),
+        ('Цена', {
+            'fields': (('hour_price', 'four_hour_price', 'daytime_price', 'all_day_price'),)
+        }),
+        (None, {
+            'fields': ('description', 'is_active')
+        }),
+    )
