@@ -20,5 +20,5 @@ def rent_menu(query, context, data):
             query.edit_message_text(text=StaticText.load_text("rent"), reply_markup=keyboards.rent_type_keyboard())
             return
         rent_obj = RentObject.get_by_id(obj_id=data["content"])
-        text = rent_obj.description
+        text = f'{rent_obj.name}\n\n{rent_obj.description}'
         query.edit_message_text(text=text, reply_markup=keyboards.back_to_rent_choice(rent_obj.rent_type))
